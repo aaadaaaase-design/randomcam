@@ -74,7 +74,7 @@ struct WebcamWebView: UIViewRepresentable {
         // Same-host navigation (e.g. switching camera angle) stays allowed.
         func webView(_ webView: WKWebView,
                      decidePolicyFor navigationAction: WKNavigationAction,
-                     decisionHandler: @escaping (WKNavigationPolicy) -> Void) {
+                     decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             guard let host = navigationAction.request.url?.host else {
                 decisionHandler(.allow)
                 return
