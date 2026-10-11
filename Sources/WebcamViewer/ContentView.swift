@@ -6,11 +6,13 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 20) {
+                VStack(spacing: 22) {
                     randomButton
 
-                    LazyVStack(spacing: 14) {
+                    LazyVStack(spacing: 16) {
                         ForEach(sampleWebcams) { cam in
+                            // Single tap: opens straight into the live view,
+                            // no extra confirmation step.
                             WebcamCard(cam: cam) {
                                 selected = cam
                             }
@@ -18,8 +20,8 @@ struct ContentView: View {
                     }
                 }
                 .padding(.horizontal, 18)
-                .padding(.top, 8)
-                .padding(.bottom, 24)
+                .padding(.top, 10)
+                .padding(.bottom, 32)
             }
             .background(
                 LinearGradient(
@@ -35,6 +37,8 @@ struct ContentView: View {
             .navigationTitle("Камеры мира")
             .navigationBarTitleDisplayMode(.large)
             .toolbarColorScheme(.dark, for: .navigationBar)
+            // Single tap on the sheet's trigger opens the live camera
+            // immediately — no intermediate screen.
             .sheet(item: $selected) { cam in
                 WebcamDetailView(cam: cam)
             }
@@ -46,23 +50,23 @@ struct ContentView: View {
         Button {
             selected = sampleWebcams.randomElement()
         } label: {
-            HStack(spacing: 12) {
+            HStack(spacing: 14) {
                 Image(systemName: "dice.fill")
-                    .font(.title2)
-                VStack(alignment: .leading, spacing: 2) {
+                    .font(.system(size: 30))
+                VStack(alignment: .leading, spacing: 3) {
                     Text("Случайная камера")
-                        .font(.headline)
-                    Text("Открыть любую точку мира")
-                        .font(.caption)
+                        .font(.title3.weight(.semibold))
+                    Text("Открыть любую точку из \(sampleWebcams.count)")
+                        .font(.subheadline)
                         .opacity(0.85)
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
-                    .font(.subheadline.weight(.semibold))
+                    .font(.headline)
                     .opacity(0.7)
             }
             .foregroundStyle(.white)
-            .padding(18)
+            .padding(22)
             .background(
                 LinearGradient(
                     colors: [Color(red: 0.05, green: 0.58, blue: 0.60),
@@ -71,8 +75,8 @@ struct ContentView: View {
                     endPoint: .trailing
                 )
             )
-            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .shadow(color: .black.opacity(0.35), radius: 12, y: 6)
+            .clipShape(RoundedRectangle(cornerRadius: 24, style: .continuous))
+            .shadow(color: .black.opacity(0.35), radius: 14, y: 8)
         }
         .buttonStyle(.plain)
     }
@@ -84,9 +88,9 @@ private struct WebcamCard: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 14) {
+            HStack(spacing: 16) {
                 ZStack {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
                         .fill(
                             LinearGradient(
                                 colors: [Color.teal.opacity(0.55), Color.indigo.opacity(0.55)],
@@ -94,14 +98,14 @@ private struct WebcamCard: View {
                                 endPoint: .bottomTrailing
                             )
                         )
-                        .frame(width: 56, height: 56)
+                        .frame(width: 68, height: 68)
                     Text(cam.countryFlag)
-                        .font(.system(size: 26))
+                        .font(.system(size: 32))
                 }
 
-                VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 5) {
                     Text(cam.title)
-                        .font(.headline)
+                        .font(.title3.weight(.semibold))
                         .foregroundStyle(.white)
                     Text(cam.location)
                         .font(.subheadline)
@@ -111,14 +115,15 @@ private struct WebcamCard: View {
                 Spacer()
 
                 Image(systemName: "play.circle.fill")
-                    .font(.title)
+                    .font(.system(size: 34))
                     .foregroundStyle(.white.opacity(0.85))
             }
-            .padding(14)
+            .padding(16)
+            .frame(maxWidth: .infinity)
             .background(.white.opacity(0.06))
-            .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .overlay(
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
                     .strokeBorder(.white.opacity(0.08), lineWidth: 1)
             )
         }
